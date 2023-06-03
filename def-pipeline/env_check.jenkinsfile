@@ -23,8 +23,10 @@ pipeline {
         stage('kubectl version check') {
             steps {
                 withKubeConfig([credentialsId: 'kubeadm']){
-                sh 'alias kubectl="minikube kubectl --"'
-                sh 'kubectl version --short'
+                sh '''
+                    alias kubectl="minikube kubectl --"
+                    kubectl version --short
+                '''
                 }
             }
         }
