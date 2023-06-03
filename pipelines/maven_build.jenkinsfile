@@ -7,6 +7,12 @@ pipeline {
               sh "mvn clean package -DskipTests=true"
               archive 'target/*.jar' //test webhook
             }
-        }   
+        }
+        
+      stage('Maven Test') {
+            steps {
+              sh "mvn test"
+            }
+        }    
     }
 }
