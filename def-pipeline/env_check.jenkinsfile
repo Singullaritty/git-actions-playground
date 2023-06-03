@@ -21,6 +21,7 @@ pipeline {
         }
 
         stage('kubectl version check') {
+            withKubeConfig([credentialsId: 'kubeadm'])
             steps {
                 sh 'kubectl version --short'
             }
