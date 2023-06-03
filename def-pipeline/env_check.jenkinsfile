@@ -14,13 +14,13 @@ pipeline {
             }
         }
 
-        stage('Git version check') {
+        stage('docker version check') {
             steps {
                 sh 'docker -v'
             }
         }
 
-        stage('Git version check') {
+        stage('kubectl version check') {
             steps {
                 sh 'kubectl version --short'
             }
