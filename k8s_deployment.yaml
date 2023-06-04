@@ -15,10 +15,16 @@ spec:
       labels:
         app: playground-app
     spec:
+      volumes:
+      - name: app-vol
+        emptyDir: {}
       serviceAccountName: default
       containers:
       - image: to_be_replaced
         name: app-container
+        volumeMounts:
+        - mountPath: /tmp
+          name: app-vol
         securityContext:
           runAsNonRoot: true
           runAsUser: 101
