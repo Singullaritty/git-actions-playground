@@ -15,12 +15,14 @@ spec:
       labels:
         app: playground-app
     spec:
+      serviceAccountName: default
       containers:
       - image: to_be_replaced
         name: app-container
         securityContext:
           runAsNonRoot: true
           runAsUser: 101
+          readOnlyRootFilesystem: true
 ---
 apiVersion: v1
 kind: Service

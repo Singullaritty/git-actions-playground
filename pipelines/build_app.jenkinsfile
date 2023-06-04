@@ -80,7 +80,14 @@ pipeline {
 
       stage('Vulnerability scan - k8s') {
         steps {
-          sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy k8s-security.rego k8s_deployment.yaml'
+          paralel(
+            "OPA Conf scan": {
+              sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy k8s-security.rego k8s_deployment.yaml'
+            },
+            "Kubesec scan": {
+              sh "bash kubesec-scan.sh"
+            }
+          ) 
         }
       }
 
