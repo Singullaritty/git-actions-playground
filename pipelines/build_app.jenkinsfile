@@ -94,10 +94,7 @@ pipeline {
       stage('k8s deployment') {
           steps {
               withKubeConfig([credentialsId: 'kubeadm']){
-              sh """
-                  alias kubectl="minikube kubectl --"
-                  . ./k8s-deploy.sh
-              """
+              sh "bash k8s-deploy.sh"
               }
           }
       }
@@ -105,10 +102,7 @@ pipeline {
       stage('k8s deployment status') {
           steps {
               withKubeConfig([credentialsId: 'kubeadm']){
-              sh """
-                  alias kubectl="minikube kubectl --"
-                  . ./k8s-deploy-status.sh
-              """
+              sh "bash k8s-deploy-status.sh"
               }
           }
       } 

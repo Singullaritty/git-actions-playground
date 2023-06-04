@@ -14,4 +14,4 @@ sed -i "s#to_be_replaced#${imageName}#g" k8s_deployment.yaml
 #     kubectl -n default set image deploy ${deploymentName} ${containerName}=${imageName} --record=true
 # fi
 
-kubectl -n default apply -f k8s_deployment.yaml
+minikube kubectl -- -n default apply -f k8s_deployment.yaml
