@@ -34,13 +34,20 @@ pipeline {
 
       stage('SonarQUBE - static analysis') {
             steps {
-              sh """
-              mvn clean verify sonar:sonar \
-                -Dsonar.projectKey=playground-app \
-                -Dsonar.projectName='playground-app' \
-                -Dsonar.host.url=http://localhost:9000 \
-                -Dsonar.token=sqp_b295a682f526f4776504c57ce705fabcd79ad169
-              """
+              withSonarQubeEnv('SonarQube') {
+                sh """
+                mvn clean verify sonar:sonar \
+                  -Dsonar.projectKey=playground-app \
+                  -Dsonar.projectName='playground-app' \
+                  -Dsonar.host.url=http://localhost:9000 \
+                  -Dsonar.token=sqp_b295a682f526f4776504c57ce705fabcd79ad169
+                """
+              }
+              timeout(time: 2, unit: 'MINUTES') {
+                script {
+                  waitForQualityGate abortPipeline: true
+                }
+              }
             }
         }
 
