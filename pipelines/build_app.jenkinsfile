@@ -1,6 +1,15 @@
 pipeline {
   agent any
 
+  environment {
+    deploymentName = "playground"
+    containerName = "app-container"
+    serviceName = "playground-svc"
+    imageName = "lbohdan93/playground-app:${GIT_COMMIT}"
+    applicationURL="http://localhost"
+    applicationURI="/increment/99"
+  }
+
   stages {
       stage('Maven Build') {
             steps {
@@ -78,14 +87,25 @@ pipeline {
       stage('k8s deployment') {
           steps {
               withKubeConfig([credentialsId: 'kubeadm']){
-              sh "sed -i 's#to_be_replaced#lbohdan93/playground-app:${GIT_COMMIT}#g' k8s_deployment.yaml"
               sh """
                   alias kubectl="minikube kubectl --"
-                  kubectl apply -f k8s_deployment.yaml
+                  source k8s-deploy.sh
               """
               }
           }
-      }            
+      }
+
+      stage('k8s deployment status') {
+          steps {
+              withKubeConfig([credentialsId: 'kubeadm']){
+              sh """
+                  alias kubectl="minikube kubectl --"
+                  source k8s-deploy-status.sh
+              """
+              }
+          }
+      } 
+
     }
   
   post {
