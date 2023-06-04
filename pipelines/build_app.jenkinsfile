@@ -89,7 +89,7 @@ pipeline {
               withKubeConfig([credentialsId: 'kubeadm']){
               sh """
                   alias kubectl="minikube kubectl --"
-                  source k8s-deploy.sh
+                  bash k8s-deploy.sh
               """
               }
           }
@@ -100,7 +100,7 @@ pipeline {
               withKubeConfig([credentialsId: 'kubeadm']){
               sh """
                   alias kubectl="minikube kubectl --"
-                  source k8s-deploy-status.sh
+                  bash k8s-deploy-status.sh
               """
               }
           }
