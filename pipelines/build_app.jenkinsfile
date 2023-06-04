@@ -54,8 +54,6 @@ pipeline {
         }
       }
 
-
-
       stage('k8s deployment') {
           steps {
               withKubeConfig([credentialsId: 'kubeadm']){
