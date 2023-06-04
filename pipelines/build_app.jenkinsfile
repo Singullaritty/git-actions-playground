@@ -10,9 +10,9 @@ pipeline {
         }
         
       stage('Maven Unit Test') {
-            steps {
-              sh "mvn test"
-            }
+        steps {
+          sh "mvn test"
+        }
         }
 
       stage('Mutation tests') {
