@@ -20,6 +20,7 @@ spec:
         name: app-container
         securityContext:
           runAsNonRoot: true
+          runAsUser: 101
 ---
 apiVersion: v1
 kind: Service
