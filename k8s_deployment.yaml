@@ -18,6 +18,8 @@ spec:
       containers:
       - image: to_be_replaced
         name: app-container
+        securityContext:
+          runAsNonRoot: true
 ---
 apiVersion: v1
 kind: Service
