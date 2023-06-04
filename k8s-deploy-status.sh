@@ -2,7 +2,9 @@
 
 #k8s-deployment-rollout-status.sh
 
-if [[ $(minikube kubectl -- -n default rollout status deploy ${deploymentName} --timeout 10s) != *"successfully rolled out"* ]]; 
+sleep 10
+
+if [[ $(minikube kubectl -- -n default rollout status deploy ${deploymentName} --timeout 5s) != *"successfully rolled out"* ]]; 
 then     
 	echo "Deployment ${deploymentName} Rollout has Failed"
     minikube kubectl -- -n default rollout undo deploy ${deploymentName}
