@@ -50,6 +50,17 @@ pipeline {
             }
         }
 
+      stage('Vulnerability scan - docker') {
+        steps {
+            sh 'mvn dependency-check:check'
+          }
+          post {
+            always {
+              dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+            }
+          }
+        }
+
       stage('Docker build & push') {
         steps {
           withDockerRegistry([credentialsId: "docker", url: ""]) {
@@ -59,16 +70,18 @@ pipeline {
         }
       }
 
-        stage('k8s deployment') {
-            steps {
-                withKubeConfig([credentialsId: 'kubeadm']){
-                sh "sed -i 's#to_be_replaced#lbohdan93/playground-app:${GIT_COMMIT}#g' k8s_deployment.yaml"
-                sh """
-                    alias kubectl="minikube kubectl --"
-                    kubectl apply -f k8s_deployment.yaml
-                """
-                }
-            }
-        }            
+
+
+      stage('k8s deployment') {
+          steps {
+              withKubeConfig([credentialsId: 'kubeadm']){
+              sh "sed -i 's#to_be_replaced#lbohdan93/playground-app:${GIT_COMMIT}#g' k8s_deployment.yaml"
+              sh """
+                  alias kubectl="minikube kubectl --"
+                  kubectl apply -f k8s_deployment.yaml
+              """
+              }
+          }
+      }            
     }
 }
