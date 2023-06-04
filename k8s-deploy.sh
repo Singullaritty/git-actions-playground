@@ -2,7 +2,7 @@
 
 #k8s-deployment.sh
 
-sed -i "s#to_be_replaced#${imageName}#g" k8s_deployment_service.yaml
+sed -i "s#to_be_replaced#${imageName}#g" k8s_deployment.yaml
 kubectl -n default get deployment ${deploymentName} > /dev/null
 
 if [[ $? -ne 0 ]]; then
