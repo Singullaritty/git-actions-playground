@@ -1,8 +1,7 @@
 #!/bin/bash
 
-#k8s-deployment-rollout-status.sh
 
-sleep 10
+sleep 15
 
 if [[ $(minikube kubectl -- -n default rollout status deploy ${deploymentName} --timeout 5s) != *"successfully rolled out"* ]]; 
 then     

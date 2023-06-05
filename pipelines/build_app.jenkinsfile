@@ -6,7 +6,7 @@ pipeline {
     containerName = "app-container"
     serviceName = "playground-svc"
     imageName = "lbohdan93/playground-app:${GIT_COMMIT}"
-    applicationURL="http://localhost"
+    applicationURL="http://192.168.39.203"
     applicationURI="/increment/99"
   }
 
@@ -94,7 +94,7 @@ pipeline {
         }
       }
 
-      stage('k8s deployment') {
+      stage('k8s deployment - nonprod') {
           steps {
               withKubeConfig([credentialsId: 'kubeadm']){
               sh "bash k8s-deploy.sh"
@@ -111,7 +111,24 @@ pipeline {
       } 
 
     }
-  
+
+      stage('Integration test - nonprod') {
+        steps {
+          script {
+            try {
+              withKubeConfig([credentialsId: 'kubeadm']) {
+                sh "bash integration-test.sh"
+              }
+            } catch (e) {
+              withKubeConfig([credentialsId: 'kubeadm']) {
+                sh "minikube kubectl -- -n default rollout undo deploy ${deploymentName}"
+              }
+              throw e
+            }
+          }
+        }
+      }
+
   post {
     always {
       junit 'target/surefire-reports/*.xml'

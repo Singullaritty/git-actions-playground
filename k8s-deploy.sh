@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#k8s-deployment.sh
 
 sed -i "s#to_be_replaced#${imageName}#g" k8s_deployment.yaml
 # kubectl -n default get deployment ${deploymentName} > /dev/null
