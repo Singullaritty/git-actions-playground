@@ -110,8 +110,6 @@ pipeline {
           }
       } 
 
-    }
-
       stage('Integration test - nonprod') {
         steps {
           script {
@@ -128,6 +126,8 @@ pipeline {
           }
         }
       }
+
+    }
 
   post {
     always {
